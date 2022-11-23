@@ -1,0 +1,33 @@
+@use '../variables/colors.scss';
+@use '../variables/fonts.scss';
+@use '../common/common.scss';
+
+.login-content {
+  background-color: colors.$white;
+}
+
+.login-container {
+  @extend .container-center;
+  height: 100%;
+  width: 100%;
+}
+
+.logo-box {
+  @extend .container-center;
+  flex-direction: column;
+  width: 30vw;
+  height: 100vh;
+  background-color: colors.$primary;
+  color: colors.$white;
+  font-family: fonts.$primary-font;
+}
+
+.login-box {
+  @extend .container-center;
+  width: 30%;
+  flex-direction: column;
+}
+
+.login-btn {
+  width: 100%;
+}
