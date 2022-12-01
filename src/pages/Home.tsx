@@ -6,7 +6,7 @@ import { FRONT_SLASH } from '../utils/constants';
 import { startCase } from 'lodash';
 import authContext from 'src/context/auth/authContext';
 
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 type HomeProps = {
   children?: React.ReactNode;
