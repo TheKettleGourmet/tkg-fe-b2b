@@ -27,6 +27,7 @@ import {
   convertBulkOrdersToFormValues,
   convertFormValuesToBulkOrder,
   Hamper,
+  HamperOrdersFormItem,
   hasValidHampers
 } from '../../components/bulkOrders/bulkOrdersHelper';
 import Hampers from '../../components/bulkOrders/createBulkOrder/hampers/Hampers';
@@ -57,8 +58,8 @@ const CreateBulkOrder = () => {
     new Map()
   );
 
-  const [openCustomerMessageModal, setOpenCustomerMessageModal] =
-    React.useState<boolean>(false);
+  const [msgPreviewFormItem, setMsgPreviewFormItem] =
+    React.useState<HamperOrdersFormItem | null>(null);
 
   const [msgTmpl, setMsgTmpl] = React.useState<MsgTmpl>({
     tmpl: '',
@@ -68,8 +69,6 @@ const CreateBulkOrder = () => {
     !(orderId || !isEmpty(form.getFieldsValue(true)))
   );
   const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
-
-  const customerMessageMsgVariables = (msgvars: string[]) => {};
 
   React.useEffect(() => {
     if (orderId) {
@@ -111,10 +110,18 @@ const CreateBulkOrder = () => {
       <Title level={2}>Create Bulk Order</Title>
       <Space direction='vertical' size='large' style={{ width: '100%' }}>
         <Text>
-          Bulk orders allow you to send the same hamper to multiple addresses.
+          Bulk orders allow you to send your orders to multiple addresses.
         </Text>
+        <Space direction='vertical'>
+          <Text>*Here's how: </Text>
+          <Text>1) Fill up payee details and choose your mode of payment</Text>
+          <Text>2) Design your customized orders from our menu</Text>
+          <Text>3) Add a message for your gift</Text>
+          <Text>4) Insert your customer details</Text>
+          <Text>5) Finally, make your payment*</Text>
+        </Space>
         <Title level={4} style={{ marginTop: 10 }}>
-          Payee Details
+          Insert Payee Details
         </Title>
         <Form
           form={form}
@@ -144,7 +151,11 @@ const CreateBulkOrder = () => {
             label='Contact No.'
             name='payeeContactNo'
             rules={[
-              { required: true, message: 'Please input your contact number!' }
+              {
+                required: true,
+                message: 'Please input a valid contact number!',
+                pattern: /^\+?(65)?[689][0-9]{7}$/
+              }
             ]}
           >
             <InputNumber
@@ -187,7 +198,7 @@ const CreateBulkOrder = () => {
         </Space> */}
         <Space direction='vertical' style={{ width: '100%' }}>
           <Title level={4} style={{ marginTop: 10 }}>
-            Hampers
+            Select Orders
           </Title>
           <Hampers
             hampers={[...hampersMap.values()]}
@@ -202,7 +213,7 @@ const CreateBulkOrder = () => {
         </Space>
         <Space direction='vertical' style={{ width: '100%' }}>
           <Space align='baseline'>
-            <Title level={4}>Message Template</Title>
+            <Title level={4}>Craft Message</Title>
             <ConfirmationModalButton
               modalProps={{
                 title: 'Message Template',
@@ -216,7 +227,7 @@ const CreateBulkOrder = () => {
           </Space>
           <MessageTemplate msgTmpl={msgTmpl} updateMsgTmpl={setMsgTmpl} />
         </Space>
-        <Title level={4}>Hamper Orders</Title>
+        <Title level={4}>Insert Receiver Details</Title>
         <Form
           name='hamperOrders'
           onFinish={onFinish}
@@ -245,7 +256,13 @@ const CreateBulkOrder = () => {
                 <Form.Item
                   {...restField}
                   name={[name, 'customerContactNo']}
-                  rules={[{ required: true, message: 'Contact no. required' }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Valid contact no. required',
+                      pattern: /^\+?(65)?[689][0-9]{7}$/
+                    }
+                  ]}
                   style={{ flex: 0.75 }}
                 >
                   <InputNumber
@@ -261,7 +278,7 @@ const CreateBulkOrder = () => {
                   rules={[{ required: true, message: 'Hamper type required' }]}
                   style={{ flex: 0.5 }}
                 >
-                  <Select placeholder='Hamper'>
+                  <Select placeholder='Gift'>
                     {[...hampersMap.values()].map((hamper) => (
                       <Option key={hamper.id} value={hamper.id}>
                         {hamper.hamperName}
@@ -294,11 +311,11 @@ const CreateBulkOrder = () => {
                     key={i}
                     name={[name, `msgVar${i}`]}
                     rules={[
-                      { required: true, message: 'Msg variable required' }
+                      { required: true, message: 'Message variable required' }
                     ]}
                     style={{ flex: 1.5 / msgTmpl.varSymbolCount }}
                   >
-                    <Input placeholder={`Msg Variable ${i}`} />
+                    <Input placeholder={`Message Variable ${i}`} />
                   </Form.Item>
                 ))}
                 <Tooltip
@@ -311,20 +328,24 @@ const CreateBulkOrder = () => {
                     type='primary'
                     shape='circle'
                     icon={<EyeOutlined />}
-                    onClick={() => setOpenCustomerMessageModal(true)}
+                    onClick={() =>
+                      setMsgPreviewFormItem(
+                        form.getFieldValue('hamperOrdersList')?.[key]
+                      )
+                    }
                   />
                 </Tooltip>
-                <CustomerMessageModal
-                  open={openCustomerMessageModal}
-                  msgTmpl={msgTmpl}
-                  hamperOrderFormItem={
-                    form.getFieldValue('hamperOrdersList')?.[key]
-                  }
-                  onClose={() => setOpenCustomerMessageModal(false)}
-                />
               </>
             )}
           />
+          {msgPreviewFormItem && (
+            <CustomerMessageModal
+              open={!!msgPreviewFormItem}
+              msgTmpl={msgTmpl}
+              hamperOrderFormItem={msgPreviewFormItem}
+              onClose={() => setMsgPreviewFormItem(null)}
+            />
+          )}
           <div className='container-spaced-out' style={{ marginTop: '2em' }}>
             {/* <Button style={{ flex: 1 }} onClick={() => form.resetFields()}>
               Cancel
