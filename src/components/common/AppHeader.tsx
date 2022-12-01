@@ -24,13 +24,6 @@ const AppHeader = () => {
   const { isAuthenticated, logout } = React.useContext(authContext);
 
   const menuItems: MenuProps['items'] = [
-    ...(!isAuthenticated
-      ? [{ label: <Link to={LOGIN_URL}>Login</Link>, key: LOGIN_URL }]
-      : []),
-    {
-      label: <Link to={CATALOGUE_URL}>Catalogue</Link>,
-      key: CATALOGUE_URL
-    },
     {
       label: 'Bulk Orders',
       key: 'bulkOrders',
@@ -69,6 +62,13 @@ const AppHeader = () => {
               : [])
           ]
     },
+    {
+      label: <Link to={CATALOGUE_URL}>Catalogue</Link>,
+      key: CATALOGUE_URL
+    },
+    ...(!isAuthenticated
+      ? [{ label: <Link to={LOGIN_URL}>Login</Link>, key: LOGIN_URL }]
+      : []),
     ...(isAuthenticated
       ? [
           {

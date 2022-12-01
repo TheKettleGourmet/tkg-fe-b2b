@@ -48,7 +48,7 @@ const Hampers = ({ hampers, updateHampers }: HampersProps) => {
           ])
         }
       >
-        Add Hamper
+        Add Gift
       </Button>
     </Space>
   );

@@ -80,7 +80,7 @@ const App = () => {
                 <Route
                   path={MY_ACCOUNT_URL}
                   element={
-                    <AuthRoute redirectTo={LOGIN_URL}>
+                    <AuthRoute redirectTo={CREATE_BULK_ORDER_URL}>
                       <Home>
                         <ViewMyAccount />
                       </Home>
@@ -92,7 +92,7 @@ const App = () => {
                   path='/'
                   element={
                     <AuthRoute
-                      redirectTo={LOGIN_URL}
+                      redirectTo={CREATE_BULK_ORDER_URL}
                       unverifiedRedirect={MY_ACCOUNT_URL}
                     >
                       <Home />

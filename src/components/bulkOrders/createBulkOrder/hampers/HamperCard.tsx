@@ -50,7 +50,7 @@ const HamperCard = ({
             <div className='hamper-name-input'>
               <div className='hamper-name-label'>
                 <Text style={{ fontSize: 14, fontWeight: 'normal' }}>
-                  Hamper Name
+                  Order Name
                 </Text>
               </div>
               <Input
@@ -94,7 +94,7 @@ const HamperCard = ({
       {editHamper.hamperItems.length > 0 ? (
         <List
           dataSource={editHamper.hamperItems}
-          header='Products in Hamper'
+          header='Products in Gift'
           renderItem={(item, index) => (
             <List.Item style={{ marginBottom: 8 }}>
               <List.Item.Meta
@@ -124,12 +124,12 @@ const HamperCard = ({
       <Space direction='vertical' size='large' style={{ width: '100%' }}>
         {inEditMode && (
           <Button block onClick={() => setCatalogueModalOpen(true)}>
-            View Product Catalogue
+            View Menu
           </Button>
         )}
         <div>
           <Divider orientation='left' orientationMargin={0}>
-            {editHamper.hamperItems.length > 0 && 'Hamper Total'}
+            {editHamper.hamperItems.length > 0 && 'Gift Total'}
           </Divider>
           {editHamper.hamperItems.length > 0 && (
             <Text>{`$${calculateSalesOrderAmt(editHamper.hamperItems).toFixed(

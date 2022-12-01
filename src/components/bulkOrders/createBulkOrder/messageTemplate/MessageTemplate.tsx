@@ -23,22 +23,51 @@ export const MSG_TMPL_VAR_LIMIT = 3;
 export const MESSAGE_TEMPLATE_DESC = (
   <Space direction='vertical' size={40}>
     <Text>
-      {`Message templates allow you to tailor your message to each of your customers. All you have to do is input '{}' wherever you want to include a variable, save the template, and you can then customise the variable for each customer that you are ordering for.`}
+      {`Message templates allow you to tailor your message to each of your customers. Enter a fixed message template and insert “{ }” where you want to customize your inputs for each customer. 
+`}
     </Text>
-    <div>
-      <Text>Example: Hey </Text>
-      <Text keyboard>{MSG_TMPL_VAR_SYMBOL}</Text>
-      <Text>, Happy Holidays to you and your family!</Text>
-    </div>
     <Space direction='vertical'>
-      <Text italic>*Note that a maximum of 3 variables are allowed.</Text>
+      <Text>{`*Note that a maximum of 3 “{}” are allowed.`}</Text>
+      <Text>{`*Example 4 is used when you would like to enter different messages for each customer.`}</Text>
+    </Space>
+
+    <Space direction='vertical'>
       <div>
-        <Text italic>
-          *If you would like to enter individual messages for each customer,
-          just enter a single{' '}
+        <Text italic>Example 1: Hey </Text>
+        <Text italic keyboard>
+          {MSG_TMPL_VAR_SYMBOL}
         </Text>
-        <Text italic keyboard>{`${MSG_TMPL_VAR_SYMBOL}`}</Text>
-        <Text italic> as the message template.</Text>
+        <Text italic>, Happy Holidays to you and your family!</Text>
+      </div>
+      <div>
+        <Text italic>Example 2: Hello </Text>
+        <Text italic keyboard>
+          {MSG_TMPL_VAR_SYMBOL}
+        </Text>
+        <Text italic>, enjoy the gift! </Text>
+        <Text italic keyboard>
+          {MSG_TMPL_VAR_SYMBOL}
+        </Text>
+      </div>
+      <div>
+        <Text italic>Example 3: Hi </Text>
+        <Text italic keyboard>
+          {MSG_TMPL_VAR_SYMBOL}
+        </Text>
+        <Text italic>! Share this gift with your </Text>
+        <Text italic keyboard>
+          {MSG_TMPL_VAR_SYMBOL}
+        </Text>
+        <Text italic>, Happy Holiday! From </Text>
+        <Text italic keyboard>
+          {MSG_TMPL_VAR_SYMBOL}
+        </Text>
+      </div>
+      <div>
+        <Text italic>Example 4: </Text>
+        <Text italic keyboard>
+          {MSG_TMPL_VAR_SYMBOL}
+        </Text>
       </div>
     </Space>
   </Space>

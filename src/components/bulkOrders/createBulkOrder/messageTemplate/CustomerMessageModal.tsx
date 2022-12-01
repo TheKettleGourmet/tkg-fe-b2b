@@ -18,7 +18,6 @@ const CustomerMessageModal = ({
   hamperOrderFormItem,
   onClose
 }: CustomerMessageModalProps) => {
-  console.log(hamperOrderFormItem);
   return (
     <>
       <Modal
