@@ -107,7 +107,7 @@ const CreateBulkOrder = () => {
 
   return (
     <div className='container-left' style={{ marginBottom: '2em' }}>
-      <Title level={2}>Create Bulk Order</Title>
+      <Title level={2}>Order</Title>
       <Space direction='vertical' size='large' style={{ width: '100%' }}>
         <Text>
           Bulk orders allow you to send your orders to multiple addresses.
