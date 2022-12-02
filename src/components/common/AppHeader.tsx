@@ -25,7 +25,7 @@ const AppHeader = () => {
 
   const menuItems: MenuProps['items'] = [
     {
-      label: 'Bulk Orders',
+      label: 'Orders',
       key: 'bulkOrders',
       children: isAuthenticated
         ? [
@@ -34,13 +34,13 @@ const AppHeader = () => {
               key: BULK_ORDERS_URL
             },
             {
-              label: <Link to={CREATE_BULK_ORDER_URL}>Create Bulk Order</Link>,
+              label: <Link to={CREATE_BULK_ORDER_URL}>Create Order</Link>,
               key: CREATE_BULK_ORDER_URL
             }
           ]
         : [
             {
-              label: <Link to={CREATE_BULK_ORDER_URL}>Create Bulk Order</Link>,
+              label: <Link to={CREATE_BULK_ORDER_URL}>Create Order</Link>,
               key: CREATE_BULK_ORDER_URL
             },
             ...(bulkOrderId
