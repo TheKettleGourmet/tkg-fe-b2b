@@ -10,10 +10,7 @@ import {
   SalesOrder,
   SalesOrderItem
 } from '../../models/types';
-import {
-  MsgTmpl,
-  MSG_TMPL_VAR_SYMBOL
-} from './createBulkOrder/messageTemplate/MessageTemplate';
+import { MsgTmpl } from './createBulkOrder/messageTemplate/MessageTemplate';
 
 export interface HamperOrdersFormItem {
   customerName: string;
@@ -21,7 +18,9 @@ export interface HamperOrdersFormItem {
   hamperId: string;
   customerAddress: string;
   postalCode: string;
-  [msgVar: string]: string;
+  customerRemarks?: string;
+  customerMessage?: string;
+  // [msgVar: string]: string;
 }
 
 export interface Hamper {
@@ -40,6 +39,8 @@ export const convertHamperOrderToSalesOrder = (
     customerName,
     customerContactNo,
     customerAddress,
+    customerRemarks,
+    customerMessage,
     postalCode,
     hamperId
   } = hamperOrder;
@@ -49,12 +50,13 @@ export const convertHamperOrderToSalesOrder = (
     (prev, curr) => prev + curr.quantity * curr.price,
     0
   );
-  const customerRemarks = generateMsgTmpl(hamperOrder, msgTmpl);
+  // const customerRemarks = generateMsgTmpl(hamperOrder, msgTmpl);
   return {
     customerName,
     customerAddress,
     postalCode,
     customerContactNo,
+    customerMessage,
     customerRemarks,
     currency: 'SGD',
     amount,
@@ -64,30 +66,41 @@ export const convertHamperOrderToSalesOrder = (
   };
 };
 
+// export const generateMsgTmpl = (
+//   hamperOrder: HamperOrdersFormItem,
+//   msgTmpl: MsgTmpl
+// ): string | undefined => {
+//   const { tmpl, varSymbolCount } = msgTmpl;
+//   if (!tmpl) return undefined;
+//   if (tmpl && varSymbolCount === 0) return tmpl;
+
+//   let interpolatedTmpl = tmpl;
+//   for (let i = 1; i <= varSymbolCount; i++) {
+//     interpolatedTmpl = interpolatedTmpl.replace(
+//       MSG_TMPL_VAR_SYMBOL,
+//       hamperOrder[`msgVar${i}`] ?? ''
+//     );
+//   }
+//   return interpolatedTmpl;
+// };
+
 export const generateMsgTmpl = (
   hamperOrder: HamperOrdersFormItem,
   msgTmpl: MsgTmpl
-): string | undefined => {
-  const { tmpl, varSymbolCount } = msgTmpl;
-  if (!tmpl) return undefined;
-  if (tmpl && varSymbolCount === 0) return tmpl;
-
-  let interpolatedTmpl = tmpl;
-  for (let i = 1; i <= varSymbolCount; i++) {
-    interpolatedTmpl = interpolatedTmpl.replace(
-      MSG_TMPL_VAR_SYMBOL,
-      hamperOrder[`msgVar${i}`] ?? ''
-    );
-  }
-  return interpolatedTmpl;
-};
+): string | undefined => '';
 
 export const convertSalesOrderToHamperOrder = (
   salesOrder: SalesOrder,
   hampersMap: Map<string, Hamper>
 ): HamperOrdersFormItem => {
-  const { customerName, customerContactNo, customerAddress, postalCode } =
-    salesOrder;
+  const {
+    customerName,
+    customerContactNo,
+    customerAddress,
+    postalCode,
+    customerMessage,
+    customerRemarks
+  } = salesOrder;
   const hamperId =
     [...hampersMap.values()].find((hamper) =>
       compareSalesOrderItems(
@@ -101,6 +114,8 @@ export const convertSalesOrderToHamperOrder = (
     customerName,
     customerContactNo,
     customerAddress,
+    customerMessage,
+    customerRemarks,
     postalCode,
     hamperId
   };
@@ -116,13 +131,14 @@ export const getHampersMap = (
     const existingHampers = [...hampersMap.values()];
     console.log(existingHampers);
     if (
+      salesOrderItems.length > 0 &&
       existingHampers.every((hamper) =>
         compareSalesOrderItems(hamper.hamperItems, salesOrderItems, false)
       )
     ) {
       const newHamper: Hamper = {
         id: uuidv4(),
-        hamperName: `Hamper ${hamperIndex++}`,
+        hamperName: `Bundle ${hamperIndex++}`,
         hamperItems: salesOrderItems,
         isNewAdded: false
       };
@@ -206,11 +222,9 @@ export const convertBulkOrdersToFormValues = (
     salesOrders
   } = bulkOrder;
   const generatedHampersMap = getHampersMap(salesOrders);
-  const hamperOrdersList = salesOrders
-    .map((salesOrder) =>
-      convertSalesOrderToHamperOrder(salesOrder, generatedHampersMap)
-    )
-    .filter((hamperOrder) => !!hamperOrder.hamperId);
+  const hamperOrdersList = salesOrders.map((salesOrder) =>
+    convertSalesOrderToHamperOrder(salesOrder, generatedHampersMap)
+  );
   const formValues = {
     payeeName,
     payeeContactNo,
