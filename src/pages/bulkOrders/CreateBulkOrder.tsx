@@ -1,4 +1,3 @@
-import { EyeOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import {
   Button,
   Space,
@@ -7,13 +6,11 @@ import {
   Form,
   InputNumber,
   Select,
-  Grid,
-  Tooltip
+  Grid
 } from 'antd';
 import { isEmpty, startCase } from 'lodash';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import CustomerMessageModal from 'src/components/bulkOrders/createBulkOrder/messageTemplate/CustomerMessageModal';
 import authContext from 'src/context/auth/authContext';
 import bulkOrdersContext from 'src/context/bulkOrders/bulkOrdersContext';
 import { PaymentMode } from 'src/models/types';
@@ -31,16 +28,13 @@ import {
   hasValidHampers
 } from '../../components/bulkOrders/bulkOrdersHelper';
 import Hampers from '../../components/bulkOrders/createBulkOrder/hampers/Hampers';
-import MessageTemplate, {
-  MESSAGE_TEMPLATE_DESC,
-  MsgTmpl
-} from '../../components/bulkOrders/createBulkOrder/messageTemplate/MessageTemplate';
+import { MsgTmpl } from '../../components/bulkOrders/createBulkOrder/messageTemplate/MessageTemplate';
 import ConfirmationModalButton from '../../components/common/ConfirmationModalButton';
 import DynamicFormItem from '../../components/common/DynamicFormItem';
 import '../../styles/common/common.scss';
 
 const { Option } = Select;
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
 const { useBreakpoint } = Grid;
 
@@ -107,22 +101,67 @@ const CreateBulkOrder = () => {
 
   return (
     <div className='container-left' style={{ marginBottom: '2em' }}>
-      <Title level={2}>Order</Title>
+      <Title level={2}>Orders</Title>
       <Space direction='vertical' size='large' style={{ width: '100%' }}>
-        <Text>
-          Bulk orders allow you to send your orders to multiple addresses.
-        </Text>
+        <Text>Create a Bulk Order for multiple addresses.</Text>
         <Space direction='vertical'>
           <Text>*Here's how: </Text>
-          <Text>1) Fill up payee details and choose your mode of payment</Text>
-          <Text>2) Design your customized orders from our menu</Text>
-          <Text>3) Add a message for your gift</Text>
-          <Text>4) Insert your customer details</Text>
-          <Text>5) Finally, make your payment*</Text>
+          <Text>
+            1) Fill up payee details in Section A and choose your mode of
+            payment
+          </Text>
+          <Text>
+            2) Design and name your customized bundles from our menu in section
+            B, save after finish editing
+          </Text>
+          <Text>
+            3) Input your recipient details in Section C, choose the bundle name
+            created in Section B to allocate to your preferred recipient
+          </Text>
+          <Text>
+            4) Craft your personalize message and input remarks (if any) in the
+            given text boxes
+          </Text>
+          <Text>5) Finally, check your order and make payment</Text>
         </Space>
-        <Title level={4} style={{ marginTop: 10 }}>
-          Insert Payee Details
-        </Title>
+        <Space direction='vertical'>
+          <Text underline>
+            For allocation of bulk orders to multiple addresses (e.g Christmas
+            Mini x100, x200):
+          </Text>
+          <Text>
+            a) Allocate bulk bundle item (e.g Christmas Mini x100) to your first
+            added customer
+          </Text>
+          <Text>
+            b) For subsequent customers, fill in customer details and leave
+            bundle selection empty
+          </Text>
+          <Text>
+            c) Under remarks, state quantity to deliver or special instructions
+          </Text>
+        </Space>
+        <div>
+          <Text italic>
+            Note: If you have enquiries or are looking for a quantity that is
+            not available in our selection (e.g MM Box x 102), please
+            contact/whatsapp us at{' '}
+          </Text>
+          <Text strong italic>
+            +65 8020 0741
+          </Text>
+          <Text> or drop us an email at </Text>
+          <Text strong italic>
+            zac@thekettlegourmet.com
+          </Text>
+          <Text italic>. We will respond to your query accordingly.</Text>
+        </div>
+        <Space direction='vertical'>
+          <Title level={4} style={{ marginTop: 10 }}>
+            Section A: Insert Payee Details
+          </Title>
+          <Text>Fill up payee details and choose your mode of payment.</Text>
+        </Space>
         <Form
           form={form}
           name='hamperOrders'
@@ -196,10 +235,17 @@ const CreateBulkOrder = () => {
             <Button icon={<UploadOutlined />}>Click to upload template</Button>
           </Upload>
         </Space> */}
-        <Space direction='vertical' style={{ width: '100%' }}>
+        <Space
+          direction='vertical'
+          style={{ width: '100%', marginBottom: '2em' }}
+        >
           <Title level={4} style={{ marginTop: 10 }}>
-            Select Orders
+            Section B: Bundle Creation
           </Title>
+          <Text>
+            Click on Add Gift to design and name your customized bundles from
+            our menu, save after you have finished editing.
+          </Text>
           <Hampers
             hampers={[...hampersMap.values()]}
             updateHampers={(hampers) =>
@@ -211,7 +257,7 @@ const CreateBulkOrder = () => {
             }
           />
         </Space>
-        <Space direction='vertical' style={{ width: '100%' }}>
+        {/* <Space direction='vertical' style={{ width: '100%' }}>
           <Space align='baseline'>
             <Title level={4}>Craft Message</Title>
             <ConfirmationModalButton
@@ -226,8 +272,31 @@ const CreateBulkOrder = () => {
             />
           </Space>
           <MessageTemplate msgTmpl={msgTmpl} updateMsgTmpl={setMsgTmpl} />
+        </Space> */}
+        <Space direction='vertical' style={{ width: '100%' }}>
+          <Title level={4}>Section C: Insert Receiver Details</Title>
+          <Text>
+            Insert your receiver details, choose the bundle name you created
+            earlier to allocate to your preferred recipient*
+          </Text>
         </Space>
-        <Title level={4}>Insert Receiver Details</Title>
+        <Space direction='vertical' style={{ marginBottom: '1em' }}>
+          <Text underline>
+            For allocation of bulk orders to multiple addresses (e.g Christmas
+            Mini x100, x200):
+          </Text>
+          <Text>
+            a) Allocate bulk bundle item (e.g Christmas Mini x100) to your first
+            added customer
+          </Text>
+          <Text>
+            b) For subsequent customers, fill in customer details and leave
+            bundle selection empty
+          </Text>
+          <Text>
+            c) Under remarks, state quantity to deliver or special instructions
+          </Text>
+        </Space>
         <Form
           name='hamperOrders'
           onFinish={onFinish}
@@ -242,7 +311,7 @@ const CreateBulkOrder = () => {
             addBtnTxt='Add Customer'
             disableAdd={!hasValidHampers([...hampersMap.values()])}
             formChildren={({ key, name, ...restField }) => (
-              <>
+              <div style={{ display: 'flex', gap: '0.6em', width: '100%' }}>
                 <Form.Item
                   {...restField}
                   name={[name, 'customerName']}
@@ -275,10 +344,10 @@ const CreateBulkOrder = () => {
                 <Form.Item
                   {...restField}
                   name={[name, 'hamperId']}
-                  rules={[{ required: true, message: 'Hamper type required' }]}
+                  // rules={[{ required: true, message: 'Hamper type required' }]}
                   style={{ flex: 0.5 }}
                 >
-                  <Select placeholder='Gift'>
+                  <Select placeholder='Bundle'>
                     {[...hampersMap.values()].map((hamper) => (
                       <Option key={hamper.id} value={hamper.id}>
                         {hamper.hamperName}
@@ -302,7 +371,29 @@ const CreateBulkOrder = () => {
                 >
                   <Input placeholder='Postal Code' />
                 </Form.Item>
-                {Array.from(
+                <Form.Item
+                  {...restField}
+                  name={[name, 'customerMessage']}
+                  style={{ flex: 0.8 }}
+                >
+                  <Input.TextArea
+                    showCount
+                    maxLength={500}
+                    placeholder='Customer Message'
+                  />
+                </Form.Item>
+                <Form.Item
+                  {...restField}
+                  name={[name, 'customerRemarks']}
+                  style={{ flex: 0.6 }}
+                >
+                  <Input.TextArea
+                    showCount
+                    maxLength={500}
+                    placeholder='Remarks'
+                  />
+                </Form.Item>
+                {/* {Array.from(
                   { length: msgTmpl.varSymbolCount },
                   (_, i) => i + 1
                 ).map((i) => (
@@ -317,8 +408,8 @@ const CreateBulkOrder = () => {
                   >
                     <Input placeholder={`Message Variable ${i}`} />
                   </Form.Item>
-                ))}
-                <Tooltip
+                ))} */}
+                {/* <Tooltip
                   mouseEnterDelay={0.5}
                   placement='bottom'
                   title='Preview Message'
@@ -334,18 +425,18 @@ const CreateBulkOrder = () => {
                       )
                     }
                   />
-                </Tooltip>
-              </>
+                </Tooltip> */}
+              </div>
             )}
           />
-          {msgPreviewFormItem && (
+          {/* {msgPreviewFormItem && (
             <CustomerMessageModal
               open={!!msgPreviewFormItem}
               msgTmpl={msgTmpl}
               hamperOrderFormItem={msgPreviewFormItem}
               onClose={() => setMsgPreviewFormItem(null)}
             />
-          )}
+          )} */}
           <div className='container-spaced-out' style={{ marginTop: '2em' }}>
             {/* <Button style={{ flex: 1 }} onClick={() => form.resetFields()}>
               Cancel

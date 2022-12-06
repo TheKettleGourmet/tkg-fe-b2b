@@ -59,6 +59,10 @@ const columns: TableColumnsType<SalesOrder> = [
   },
   {
     title: 'Message',
+    dataIndex: 'customerMessage'
+  },
+  {
+    title: 'Remarks',
     dataIndex: 'customerRemarks'
   },
   {

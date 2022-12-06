@@ -35,6 +35,7 @@ export interface SalesOrder {
   currency: string;
   amount: number;
   orderStatus: OrderStatus;
+  customerMessage?: string;
   customerRemarks?: string;
   salesOrderItems: SalesOrderItem[];
 }
